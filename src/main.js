@@ -1,5 +1,5 @@
 //Код сработает когда все элемента html загружены
-document.addEventListener("DOMContentLoaded", function() {
+
     let products = [
         {
             id: 1, title: 'Куртка', price: 5000, img: 'img/catalog/img-1.jpg',
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
     ];
 //Функция для формирования верстки каждого товара
 //Добавить в выводе изображение
-    const renderProduct = (title, price, description, img) =>
+    const renderProduct = (title='Заголовок', price=0, description='Описание товара', img='img/catalog/img-9.jpg') =>
         `<div class="product">
                     <a href="product.html"><img class="product__img" src=${img} alt="product"></a> <div class="product__content">
                         <h3 class="product__name">${title}</h3>
@@ -64,7 +64,10 @@ document.addEventListener("DOMContentLoaded", function() {
         // свойство innerHTML
         document.querySelector('.product-box').innerHTML = productsList.join('');
     };
+document.addEventListener("DOMContentLoaded", function() {
     renderPage(products);
+
+
 });
 
 
