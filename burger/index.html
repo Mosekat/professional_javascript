@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+<div class="product">
+    <div class="title">Сформируйте бургер на свой вкус</div>
+    <div>
+        <div class="choise_title">Выберите размер бургера</div>
+        <div class="choise">
+            <input checked="checked" type="radio" id="radioButton" name="size" value="big">
+            <label for="radioButton">Большой</label>
+            <input type="radio" id="radioButtonB" name="size" value="small">
+            <label for="radioButtonB">Маленький</label>
+        </div>
+        <div class="choise_title">Выберите начинку бургера</div>
+        <div class="choise">
+            <p><input type="checkbox" name="topping" value="cheese"> Сыр</p>
+            <p><input type="checkbox" name="topping" value="salad"> Салат</p>
+            <p><input type="checkbox" name="topping" value="potato"> Картофель</p>
+        </div>
+        <div class="choise_title">Выберите дополнительные ингридиенты для бургера</div>
+        <div class="choise">
+            <p><input type="checkbox" name="other-topping" value="spice"> Приправа</p>
+            <p><input type="checkbox" name="other-topping" value="mayonnaise">Майонез</p>
+        </div>
+        <button>Заказать</button>
+        <div>Бургер стоит: <span id="cost"> </span></div>
+        <div>Каллорийность бургера: <span id="callories"></span></div>
+
+
+    </div>
+</div>
+
+
+<script src="script.js"></script>
+</body>
+</html>
