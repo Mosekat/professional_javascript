@@ -146,6 +146,9 @@ class ProductCart {
     getQuantityOfProduct() {
     }
 
+    /**
+     * Отрисовать каждый элемент корзины
+     */
     render() {
     }
 }
