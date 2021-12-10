@@ -11,6 +11,36 @@
     <title>Catalog</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="src/main.js"></script>
+    <style>
+        .basket {
+            position: absolute;
+            z-index: 3;
+            right: 0;
+            top: 37px;
+            background: white;
+            padding: 10px;
+            border: 1px solid #ebebeb;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .basketRow {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ebebeb;
+            padding-bottom: 10px;
+        }
+        .basketHeader{
+            font-weight: bold;
+        }
+        .basketTotal{
+        font-weight: bold;
+        text-align: right;
+        }
+
+    </style>
 
 </head>
 
@@ -85,8 +115,24 @@
 
                 <div class="header__links">
                     <a href="./registration.html"><img class="header__icons" src="img/account.svg" alt="account"></a>
-                    <a href="./cart.html"><img class="header__icons" src="img/cart.svg" alt="cart">
+                    <a href="./cart.html" id='' class="cartIconWrap"><img class="header__icons" src="img/cart.svg" alt="cart">
+                        <span id="basket-count"></span>
                     </a>
+                    <div id="cart-table" class="basket hide">
+                        <div class="basketRow basketHeader">
+                            <div>Название товара</div>
+                            <div>Количество</div>
+                            <div>Цена за шт.</div>
+                            <div>Итого</div>
+                        </div>
+                        <div id="cart">
+
+
+                        </div>
+                        <div class="basketTotal">
+                            Товаров в корзине на сумму:
+                            $<span class="basketTotalValue">0</span>
+                        </div></div>
                 </div>
             </div>
         </header>

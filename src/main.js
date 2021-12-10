@@ -1,51 +1,25 @@
+'use strict';
+const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+
 class ProductList {
     constructor(container = '.product-box') {
         this.container = container;
         this.goods = [];
-        this._fetchProducts();
-        this.render();
+        this._getProducts()
+            .then(data => {
+                this.goods = data;
+                this.render();
+
+            })
+
         this.sum();
     }
 
-    _fetchProducts() {
-        this.goods = [
-            {
-                id: 1, title: 'Куртка', price: 5000, img: 'img/catalog/img-1.jpg',
-                description: 'Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.'
-            },
-            {
-                id: 2, title: 'Рубашка', price: 3000, img: 'img/catalog/img-2.jpg',
-                description: 'Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.'
-            },
-            {
-                id: 3, title: 'Свитшот', price: 3500, img: 'img/catalog/img-3.jpg',
-                description: 'Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.'
-            },
-            {
-                id: 4, title: 'Футболка', price: 1000, img: 'img/catalog/img-4.jpg',
-                description: 'Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.'
-            },
-            {
-                id: 5, title: 'Футболка', price: 1000, img: 'img/catalog/img-5.jpg',
-                description: 'Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.'
-            },
-            {
-                id: 1, title: 'Бейсболка', price: 2000, img: 'img/catalog/img-6.jpg',
-                description: 'Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.'
-            },
-            {
-                id: 2, title: 'Рубашка', price: 3200, img: 'img/catalog/img-7.jpg',
-                description: 'Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.'
-            },
-            {
-                id: 3, title: 'Куртка', price: 3500, img: 'img/catalog/img-8.jpg',
-                description: 'Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.'
-            },
-            {
-                id: 4, title: 'Рубашка', price: 1500, img: 'img/catalog/img-9.jpg',
-                description: 'Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.'
-            }
-        ]
+    _getProducts() {
+        return fetch(`${API}/catalogData.json`).then(result => result.json()).catch(error => {
+            console.log(error);
+        });
+
     }
 
     render() {
@@ -55,6 +29,7 @@ class ProductList {
             block.insertAdjacentHTML('beforeend', item.render());
 
         }
+
     }
 
     sum() {
@@ -68,12 +43,17 @@ class ProductList {
 
 class ProductItem {
     constructor(product) {
-        this.title = product.title;
-        this.id = product.id;
+        this.title = product.product_name;
+        this.id = product.id_product;
         this.price = product.price;
-        this.img = product.img;
+
+        this.img = 'https://via.placeholder.com/360x299';
+        if (product.img !== undefined) {
+            this.img = product.img;
+        }
+
         this.description = product.description;
-        this.render();
+
     }
 
     render() {
@@ -82,7 +62,7 @@ class ProductItem {
                         <h3 class="product__name">${this.title}</h3>
                         <p class="product__text">${this.description}</p>
                         <p class="product__price">${this.price}</p>
-                                      <a href="cart.html" class="product__add">
+                        <a href="cart.html" class="product__add" data-product_id='${this.id}'>
                         <svg class="product__cart" width="27" height="25" viewBox="0 0 27 25"
                              fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -97,14 +77,51 @@ class ProductItem {
 }
 
 class Cart {
-    constructor() {
+    constructor(container = 'cart') {
+        this.container = container;
+        this.goods = [];
+        this._getProducts().then(data => {
+            this.goods = data.contents;
 
+            this.render();
+        })
+        //Начала делать дополнительные задания в дз, не смогла закончить, поэтому код закоментриван
+        // this.buttonAdd = document.querySelectorAll(".product-box");
+        //
+        // this.buttonAdd.forEach(buttonEl => {
+        //     buttonEl.addEventListener('click', event => {
+        //         if(event.target.classList.contains('product__add')){
+        //             let idEl = event.target.getAttribute("data-product_id");
+        //             console.log(idEl)
+        //             event.preventDefault();
+        //         }
+        //     })
+        // })
+    }
+
+    _getProducts() {
+        return fetch(`${API}/getBasket.json`).then(result => result.json()).catch(error => {
+            console.log(error);
+        });
+    }
+
+    render() {
+        const block = document.getElementById(this.container);
+
+        for (let product of this.goods) {
+
+            const item = new ProductCart(product);
+
+            block.insertAdjacentHTML('beforeend', item.render());
+
+        }
     }
 
     /**
      * Увеличить(уменьшить) количество продукта в корзине
      */
     changeProductInCart() {
+
 
     }
 
@@ -125,12 +142,14 @@ class Cart {
      * Отрисовать корзину
      */
 
-    render() {
-    }
 }
 
 class ProductCart {
-    constructor() {
+    constructor(product) {
+        this.title = product.product_name;
+        this.id = product.id_product;
+        this.price = product.price;
+        this.quantity = product.quantity;
 
     }
 
@@ -150,9 +169,30 @@ class ProductCart {
      * Отрисовать каждый элемент корзины
      */
     render() {
+        return `
+<div class="basketRow">
+                            <div>${this.title}</div>
+                            <div
+                                <span class="productCount">${this.quantity}</span> шт.
+                            </div>
+                            <div>$<span>${this.price}</span></div>
+                            
+                        </div>`;
     }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+    let cart = new Cart();
     let list = new ProductList();
+    let cartEl = document.querySelector('.cartIconWrap');
+
+
+    cartEl.addEventListener('click', function(event) {
+
+        event.preventDefault();
+        let cartTableEl = document.getElementById('cart-table');
+        cartTableEl.classList.toggle('show');
+
+    });
+
 })
