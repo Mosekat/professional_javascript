@@ -1,0 +1,18 @@
+label {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.error {
+    border-color: red;
+    border-width: 2px;
+    text-decoration: red;
+
+}
+
+.error-text {
+    display: none;
+    font-size: 20px;
+    color: red;
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <link rel="stylesheet" href="css_validator.css">
+</head>
+<body>
+<form action="#" id="form">
+
+    <label>Имя <br>
+        <div class="error-text">Поле для ввода должно содержать только буквы </div>
+        <input type="text"  placeholder="Иван"  name="name" id="name">
+    </label>
+
+    <label>Телефон <br>
+        <div class="error-text">Некорректный номер телефона</div>
+        <input type="text"  placeholder="+7(000)000-0000" name="phone" id="phone">
+    </label>
+
+    <label>Email <br>
+        <div class="error-text">Некорректный адрес электронной почты</div>
+        <input type="text"  placeholder="my-mail@mail.ru" name="email" id="email">
+    </label>
+    <div class="error-text"></div>
+
+    <label>Текст <br>
+        <input type="text"  placeholder="Любой текст" name="text" id="text">
+    </label>
+    <button id="btn">Отправить</button>
+</form>
+<script>
+    'use strict';
+    // Имя содержит только буквы.
+    //Телефон имеет вид +7(000)000-0000.
+    //E-mail имеет вид mymail@mail.ru, или my.mail@mail.ru, или my-mail@mail.ru.
+    //Текст произвольный.
+    //Если одно из полей не прошло валидацию, необходимо выделить это поле красной рамкой и сообщить пользователю об ошибке.
+
+    let btnEl = document.getElementById('btn');
+    let inputCollection = document.querySelectorAll("input");
+    btnEl.addEventListener('click', function(event) {
+        let send = true;
+        inputCollection.forEach((inputEl) => {
+
+                if (inputEl.name === "name") {
+                    let regExp =/^[a-zа-яё]+$/i;
+                    if (regExp.test(inputEl.value)) {
+                        //все хорошо
+                    }else {
+                        inputEl.classList.add('error');
+                        inputEl.previousElementSibling.style.display='block';
+                        send = false;
+
+                    }
+                }
+                if (inputEl.name === "phone") {
+                    let regExp =/^\+7\(\d{3}\)-\d{4}$/;
+                    if (regExp.test(inputEl.value)) {
+                        //все хорошо
+                    }else{
+                        inputEl.classList.add('error');
+                        inputEl.previousElementSibling.style.display='block';
+                        send = false;
+                    }
+                }
+                if (inputEl.name === "email") {
+                    let regExp =/^[\w._-]+@\w+\.[a-z]{2,4}$/i;
+                    if (regExp.test(inputEl.value)) {
+                        //все хорошо
+                    }else{
+                        inputEl.classList.add('error');
+                        inputEl.previousElementSibling.style.display='block';
+                        send = false;
+                    }
+                }
+
+
+        })
+        if(!send){
+            event.preventDefault();
+        }
+
+    })
+
+</script>
+</body>
+</html>
