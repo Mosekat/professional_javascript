@@ -121,13 +121,20 @@
                                 <div>Цена за шт.</div>
                                 <div>Итого</div>
                             </div>
-                            <div id="cart">
+                            <div v-if='cartItems.length>0' id="cart">
+                                <div class="basketRow basketHeader" v-for="prod of cartItems">
+                                    <div>{{prod.product_name}}</div>
+                                    <div>{{prod.quantity}}</div>
+                                    <div>{{prod.price}}</div>
+                                    <div>{{getSumOfPosition(prod)}}</div>
+                                    <button class="del-btn">×</button>
 
 
+                                </div>
                             </div>
                             <div class="basketTotal">
                                 Товаров в корзине на сумму:
-                                $<span class="basketTotalValue">0</span>
+                                $<span class="basketTotalValue">{{totalCart}}</span>
                             </div>
                         </div>
                     </div>
@@ -331,7 +338,7 @@
                             <h3 class="product__name">{{prod.product_name}}</h3>
                             <p class="product__text">undefined</p>
                             <p class="product__price">{{prod.price}}</p>
-                            <a href="cart.html" @click="addProducts(prod)" class="product__add" data-product_id="123">
+                            <a href="cart.html" @click.prevent="addProducts(prod)" class="product__add" data-product_id="123">
                                 <svg class="product__cart"
                                      width="27"
                                      height="25"
