@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             imgCatalog: 'https://via.placeholder.com/360x299',
             searchLine: '',
             isVisibleCart: false,
-            totalCart:0,
+
         },
         methods: {
             FilterGoods(searchLine) {
@@ -35,19 +35,45 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
             },
             getSumAllProducts() {
-
+                let totalCart = 0;
                 for (let product of this.cartItems) {
-                    this.totalCart+=this.getSumOfPosition(product);
+                    totalCart += this.getSumOfPosition(product);
                 }
+                return totalCart;
 
             },
             addProducts(product) {
-                for (let prodCart of this.cartItems) {
-                    if (prodCart.id_product == product.id_product) {
-                        prodCart.quantity++;
-                    }
-                }
-                this.getSumAllProducts();
+                this.getJson(`${API}/addToBasket.json`)
+                    .then(data => {
+                        if (data.result === 1) {
+                            let find = false;
+                            for (let prodCart of this.cartItems) {
+                                if (prodCart.id_product == product.id_product) {
+                                    prodCart.quantity++;
+                                    find = true;
+                                }
+                            }
+                            if (find == false) {
+                                const prod = Object.assign({quantity: 1}, product);
+                                this.cartItems.push(prod);
+                            }
+                        }
+                    })
+
+            },
+            remove(product) {
+                this.getJson(`${API}/addToBasket.json`)
+                    .then(data => {
+                        if (data.result === 1) {
+                            if (product.quantity > 1) {
+                                product.quantity--;
+                            } else {
+                                this.cartItems.splice(this.cartItems.indexOf(product), 1)
+                            }
+                            this.getSumAllProducts();
+                        }
+
+                    })
 
             }
         },

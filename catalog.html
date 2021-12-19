@@ -22,7 +22,7 @@
                 <div class="header__left">
                     <a href="./index.html"><img src="img/logo.svg" alt="logo"></a>
 
-                    <form action="#" class="search-form">
+                    <form action="#" @submit.prevent='FilterGoods(searchLine)' class="search-form">
                         <a @click="FilterGoods(searchLine)" href="#"><img class="header__search"
                                                                           src="img/search.svg"
                                                                           alt="search">
@@ -115,6 +115,7 @@
                             <span id="basket-count"></span>
                         </a>
                         <div v-if="isVisibleCart" id="cart-table" class="basket">
+
                             <div class="basketRow basketHeader">
                                 <div>Название товара</div>
                                 <div>Количество</div>
@@ -122,19 +123,22 @@
                                 <div>Итого</div>
                             </div>
                             <div v-if='cartItems.length>0' id="cart">
+
+
                                 <div class="basketRow basketHeader" v-for="prod of cartItems">
                                     <div>{{prod.product_name}}</div>
                                     <div>{{prod.quantity}}</div>
                                     <div>{{prod.price}}</div>
                                     <div>{{getSumOfPosition(prod)}}</div>
-                                    <button class="del-btn">×</button>
+                                    <button class="del-btn" @click="remove(prod)">×</button>
 
 
                                 </div>
                             </div>
+                            <div v-else="!cartItems.lenght">Корзина пуста</div>
                             <div class="basketTotal">
                                 Товаров в корзине на сумму:
-                                $<span class="basketTotalValue">{{totalCart}}</span>
+                                $<span class="basketTotalValue">{{getSumAllProducts()}}</span>
                             </div>
                         </div>
                     </div>
