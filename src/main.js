@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             imgCatalog: 'https://via.placeholder.com/360x299',
             searchLine: '',
             isVisibleCart: false,
+            isError: false,
 
         },
         methods: {
@@ -26,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 return fetch(url)
                     .then(result => result.json())
                     .catch(error => {
-                        console.log(error);
+                        this.isError = true;
                     })
             },
             getSumOfPosition(product) {
