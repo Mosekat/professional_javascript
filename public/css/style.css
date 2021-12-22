@@ -125,9 +125,45 @@ ul {
   margin-bottom: 12px;
 }
 
-/* .header__icons:not(:last-child) 
+/* .header__icons:not(:last-child)
  *  margin-right: 33px
  * */
+.cartIconWrap span {
+  display: none;
+  width: 19px;
+  height: 19px;
+  color: white;
+  background: #f16d7f;
+  border-radius: 50%;
+  position: absolute;
+  text-align: center;
+  right: -8px;
+  top: -5px;
+  font-size: 12px;
+  line-height: 19px;
+}
+
+.cartIconWrap {
+  position: relative;
+}
+
+table {
+  display: flex;
+  background: white;
+  color: #222222;
+  font-size: 12px;
+  line-height: 19px;
+  border: 1px solid black;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
 .promo {
   background: #F1E4E6;
   display: flex;
@@ -270,6 +306,15 @@ ul {
   font-size: 13px;
   line-height: 16px;
   color: #000000;
+}
+
+.product-item {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 20px 0;
 }
 
 .product__text {
@@ -1190,16 +1235,22 @@ summary::-webkit-details-marker {
 
 .custom__radio__btn {
   position: relative;
+  /* Родительский элемент*/
   display: inline-block;
+  /* Для применения рамок, размеров*/
   width: 17px;
   height: 17px;
   background: #fff;
   border: 1px solid #A4A4A4;
+  /* Толщина, стиль, цвет рамки*/
   border-radius: 50%;
+  /* Получение круга*/
   vertical-align: text-top;
+  /* Выравнивание кнопки по центру*/
   margin-right: 10px;
 }
 
+/* Отступ между кнопкой и меткой*/
 .custom__radio__btn::before {
   content: "";
   display: inline-block;
@@ -1265,6 +1316,78 @@ summary::-webkit-details-marker {
 
 .registration__button:hover .vector path {
   fill: #F16D7F;
+}
+
+.basket {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  top: 37px;
+  background: white;
+  padding: 10px;
+  border: 1px solid #ebebeb;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.basketRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 10px;
+}
+
+.basketHeader {
+  font-weight: bold;
+}
+
+.basketTotal {
+  font-weight: bold;
+  text-align: right;
+}
+
+.search-form {
+  position: relative;
+  margin-right: 50px;
+  display: inline-block;
+}
+
+.search-field:focus {
+  outline: none;
+}
+
+.search-field {
+  box-sizing: border-box;
+  width: 200px;
+  color: #fafafa;
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #fafafa;
+}
+
+.btn-search {
+  background-color: transparent;
+  border: none;
+  color: #fafafa;
+  font-size: 1.2em;
+  position: absolute;
+  bottom: 5px;
+  right: 0;
+}
+
+.del-btn {
+  width: 15px;
+  margin-top: 5px;
+  background-color: #2f2a2d;
+  padding: 5px 15px;
+  border: 1px solid transparent;
+  color: #fafafa;
+  border-radius: 5px;
+  transition: all ease-in-out 0.4s;
+  cursor: pointer;
 }
 
 @media (max-width: 1023px) {
@@ -1722,6 +1845,13 @@ summary::-webkit-details-marker {
     font-size: 16px;
     line-height: 19px;
   }
+}
+.basket {
+  font-size: 16px;
+}
+
+.basket {
+  width: 500px;
 }
 
 /*# sourceMappingURL=style.css.map */
