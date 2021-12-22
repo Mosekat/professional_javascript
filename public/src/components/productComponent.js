@@ -2,7 +2,7 @@ Vue.component('products', {
     props: ['products', 'img'],
     template: `<div class="product-box center">
                     <product v-for="product of products" :product="product"
-                    :img="img" ></product>
+                    :img="product.product_img" ></product>
                 </div>`
 });
 Vue.component('product', {

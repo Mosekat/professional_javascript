@@ -1,13 +1,13 @@
 'use strict';
-const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+const API = '';
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
     const app = new Vue({
         el: '#app',
         data: {
-            catalogUrl: '/catalogData.json',
-            cartUrl: '/getBasket.json',
+            catalogUrl: '/api/products',
+            cartUrl: '/api/cart',
             products: [],
             cartItems: [],
             filtered: [],
@@ -28,6 +28,36 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     .then(result => result.json())
                     .catch(error => {
                         this.isError = true;
+                        console.log(error);
+                    })
+
+            },
+            postJson(url, data) {
+                return fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(result => result.json())
+                    .catch(error => {
+                        console.log(error)
+                        this.isError = true;
+                    })
+            },
+            putJson(url, data) {
+                return fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(result => result.json())
+                    .catch(error => {
+                        console.log(error)
+                        this.isError = true;
                     })
             },
             getSumOfPosition(product) {
@@ -44,23 +74,29 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
             },
             addProducts(product) {
-                this.getJson(`${API}/addToBasket.json`)
-                    .then(data => {
-                        if (data.result === 1) {
-                            let find = false;
-                            for (let prodCart of this.cartItems) {
-                                if (prodCart.id_product == product.id_product) {
-                                    prodCart.quantity++;
-                                    find = true;
-                                }
-                            }
-                            if (find == false) {
-                                const prod = Object.assign({quantity: 1}, product);
-                                this.cartItems.push(prod);
-                            }
-                        }
-                    })
+                let find = false;
+                for (let prodCart of this.cartItems) {
+                    if (prodCart.id_product == product.id_product) {
+                        find = true;
+                        this.putJson(`/api/cart/${product.id_product}`, {quantity: 1}).then(data=>{
+                            this.getJson(`${API + this.cartUrl}`)
+                                .then(data => {
+                                    this.cartItems = data.contents;
 
+                                    this.getSumAllProducts();
+                                });
+                        });
+                    }
+                }
+                if (find == false) {
+                    const prod = Object.assign({quantity: 1}, product);
+                    this.postJson(`/api/cart`, prod).then(()=>{  this.getJson(`${API + this.cartUrl}`)
+                        .then(data => {
+
+                            this.cartItems = data.contents;
+                            this.getSumAllProducts();
+                        });});
+                }
             },
             remove(product) {
                 this.getJson(`${API}/addToBasket.json`)
@@ -93,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         this.cartItems.push(product);
                     }
                     this.getSumAllProducts();
-                })
+                });
 
             // this.getSumOfPosition();
             // this.getSumAllProducts();
