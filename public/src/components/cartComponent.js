@@ -33,7 +33,7 @@ Vue.component('cart-item', {
     <div>{{cartItem.quantity}}</div>
     <div>{{cartItem.price}}</div>
     <div>{{$root.getSumOfPosition(cartItem)}}</div>
-    <button class="del-btn" @click="$root.remove(cartItem)">×</button>
+    <button class="del-btn" @click.prevent='$root.removeProduct(cartItem)'>×</button>
 </div>
     
     

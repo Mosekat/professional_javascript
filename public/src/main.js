@@ -60,6 +60,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         this.isError = true;
                     })
             },
+            deleteJson(url, data) {
+                return fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(result => result.json())
+                    .catch(error => {
+                        console.log(error)
+                        this.isError = true;
+                    })
+            },
             getSumOfPosition(product) {
                 let sum = product.price * product.quantity;
                 return sum;
@@ -78,11 +92,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 for (let prodCart of this.cartItems) {
                     if (prodCart.id_product == product.id_product) {
                         find = true;
-                        this.putJson(`/api/cart/${product.id_product}`, {quantity: 1}).then(data=>{
+                        this.putJson(`/api/cart/${product.id_product}`, {quantity: 1}).then(data => {
                             this.getJson(`${API + this.cartUrl}`)
                                 .then(data => {
                                     this.cartItems = data.contents;
-
                                     this.getSumAllProducts();
                                 });
                         });
@@ -90,27 +103,28 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 }
                 if (find == false) {
                     const prod = Object.assign({quantity: 1}, product);
-                    this.postJson(`/api/cart`, prod).then(()=>{  this.getJson(`${API + this.cartUrl}`)
-                        .then(data => {
+                    this.postJson(`/api/cart`, prod).then(() => {
+                        this.getJson(`${API + this.cartUrl}`)
+                            .then(data => {
+                                if (data && data.contents) {
+                                    this.cartItems = data.contents;
+                                    this.getSumAllProducts();
+                                }
 
-                            this.cartItems = data.contents;
-                            this.getSumAllProducts();
-                        });});
+                            });
+                    });
                 }
             },
-            remove(product) {
-                this.getJson(`${API}/addToBasket.json`)
-                    .then(data => {
-                        if (data.result === 1) {
-                            if (product.quantity > 1) {
-                                product.quantity--;
-                            } else {
-                                this.cartItems.splice(this.cartItems.indexOf(product), 1)
-                            }
-                            this.getSumAllProducts();
-                        }
+            removeProduct(product) {
+                this.deleteJson(`/api/cart/${product.id_product}`, {quantity: 1})
+                    .then(() => {
+                        this.getJson(`${API + this.cartUrl}`)
+                            .then(data => {
+                                this.cartItems = data.contents;
+                                this.getSumAllProducts();
+                            });
 
-                    })
+                    });
 
             }
         },
@@ -124,11 +138,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 });
             this.getJson(`${API + this.cartUrl}`)
                 .then(data => {
-
-                    for (let product of data.contents) {
-                        this.cartItems.push(product);
+                    if (typeof data.contents === 'object') {
+                        for (let product of data.contents) {
+                            this.cartItems.push(product);
+                        }
+                        this.getSumAllProducts();
                     }
-                    this.getSumAllProducts();
+
                 });
 
             // this.getSumOfPosition();
